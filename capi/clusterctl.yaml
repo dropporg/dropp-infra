@@ -1,0 +1,16 @@
+# Pass this to clusterctl init with --config. The k3s providers are not in
+# clusterctl's built-in list, so without it init fails with "failed to get
+# configuration for the BootstrapProvider with name k3s".
+#
+# The docker provider is built in and is not redeclared here.
+providers:
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v0.4.0/bootstrap-components.yaml"
+    type: "BootstrapProvider"
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v0.4.0/control-plane-components.yaml"
+    type: "ControlPlaneProvider"
+
+CLUSTER_TOPOLOGY: "true"
+EXP_CLUSTER_RESOURCE_SET: "true"
+EXP_RUNTIME_SDK: "true"

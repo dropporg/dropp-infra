@@ -1,0 +1,31 @@
+# The Cluster API management cluster.
+#
+# Plain k3d, because something has to run the CAPI controllers before CAPI can
+# create anything. Everything after this file comes from Git.
+#
+# One server and no agents. CAPD hostPath-mounts the Docker socket, which only
+# the server node has. With an agent the controller can schedule where the
+# socket is missing and fails with "Cannot connect to the Docker daemon" while
+# Clusters sit in Provisioning with no Machines.
+#
+# No host ports: this cluster serves no ingress, so binding :80 and :443 would
+# only hold them from something else.
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: dropp-mgmt
+servers: 1
+agents: 0
+volumes:
+  - volume: /var/run/docker.sock:/var/run/docker.sock
+    nodeFilters:
+      - server:*
+options:
+  k3d:
+    wait: true
+    timeout: 180s
+  k3s:
+    nodeLabels:
+      - label: dropp.io/capi-management=true
+        nodeFilters:
+          - server:*
