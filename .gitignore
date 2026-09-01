@@ -1,0 +1,45 @@
+# Generated kubeconfigs: credentials, and they name container IPs that change.
+*.kubeconfig
+kubeconfig
+kubeconfig.*
+.kube/
+
+# Decrypted secrets. *.sops.yaml is committed ciphertext; these are not.
+*.dec.yaml
+*.dec.yml
+*.decrypted.yaml
+*.plain.yaml
+
+# Key material. The three GPG keys live in ~/.dropp-heal.
+*.asc
+*.gpg
+*.pem
+*.key
+
+# clusterctl's provider metadata and config cache.
+.cluster-api/
+clusterctl.local.yaml
+
+# helm template / helm pull leftovers.
+charts/*.tgz
+**/charts/*.tgz
+
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+tmp/
+.scratch/
+
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+.direnv/
+.envrc.local
+result
+result-*
