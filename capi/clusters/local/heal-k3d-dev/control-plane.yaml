@@ -1,0 +1,48 @@
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: KThreesControlPlane
+metadata:
+  name: heal-k3d-dev-control-plane
+  namespace: default
+spec:
+  replicas: 1
+  version: v1.31.6+k3s1
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+      kind: DockerMachineTemplate
+      name: heal-k3d-dev-control-plane
+  kthreesConfigSpec:
+    files:
+      # cluster-api-k3s v0.4.0 has no field for --flannel-backend, and
+      # disableComponents does not cover the CNI. k3s merges everything in
+      # config.yaml.d at startup, so this is how networking is handed to Calico.
+      #
+      # Both settings are needed. Leaving k3s's network policy controller on
+      # alongside Calico gives two controllers writing the same iptables chains.
+      - path: /etc/rancher/k3s/config.yaml.d/10-cni.yaml
+        owner: root:root
+        permissions: "0644"
+        content: |
+          flannel-backend: none
+          disable-network-policy: true
+          # These must match the Cluster's clusterNetwork, and nothing checks that
+          # they do. cluster-api-k3s does not pass clusterNetwork to k3s, so k3s
+          # uses its own defaults (10.42.0.0/16 pods) while Calico hands out
+          # addresses from 192.168.0.0/16.
+          #
+          # When they disagree the cluster looks healthy and fails one way:
+          # kube-proxy writes "! -s 10.42.0.0/16 -j KUBE-MARK-MASQ" per Service, so
+          # a pod at 192.168.x.x reaching a ClusterIP on another node counts as
+          # off-cluster traffic and times out. Pod-to-pod by address still works,
+          # which makes it look like a Service or DNS problem.
+          cluster-cidr: 192.168.0.0/16
+          service-cidr: 10.96.0.0/12
+    serverConfig:
+      # Envoy Gateway is the ingress dataplane here. Running traefik too would
+      # contend for :80 and :443.
+      disableComponents:
+        - traefik
+      tlsSan:
+        - heal-k3d-dev-lb
+    agentConfig: {}

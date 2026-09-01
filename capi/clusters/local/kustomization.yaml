@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - heal-k3d-dev/
+  # heal-k3d-prod is declared but not enrolled. It is 3 control planes and 3
+  # workers, which is too much alongside dev on a small workstation.
+  # Uncommenting this line is all it takes to provision it.
+  # - heal-k3d-prod/

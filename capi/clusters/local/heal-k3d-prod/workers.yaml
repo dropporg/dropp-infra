@@ -1,0 +1,38 @@
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: heal-k3d-prod-workers
+  namespace: default
+spec:
+  clusterName: heal-k3d-prod
+  replicas: 3
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: heal-k3d-prod
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: heal-k3d-prod
+    spec:
+      clusterName: heal-k3d-prod
+      version: v1.31.6+k3s1
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+          kind: KThreesConfigTemplate
+          name: heal-k3d-prod-worker
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: DockerMachineTemplate
+        name: heal-k3d-prod-worker
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: KThreesConfigTemplate
+metadata:
+  name: heal-k3d-prod-worker
+  namespace: default
+spec:
+  template:
+    spec:
+      agentConfig: {}

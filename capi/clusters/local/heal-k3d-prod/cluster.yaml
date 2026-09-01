@@ -1,0 +1,66 @@
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: heal-k3d-prod
+  namespace: default
+  labels:
+    dropp.io/environment: prod
+    # ClusterResourceSets match on labels, not names. These are what pull in
+    # capi/addons/heal-k3d-prod/calico.
+    dropp.io/cni: calico
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        # Same range as heal-k3d-dev on purpose. The clusters are never routed to
+        # each other, and Calico's default pool is 192.168.0.0/16, so a different
+        # range here would mean patching the vendored CNI manifest for nothing.
+        - 192.168.0.0/16
+    services:
+      cidrBlocks:
+        - 10.96.0.0/12
+    serviceDomain: cluster.local
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    kind: DockerCluster
+    name: heal-k3d-prod
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+    kind: KThreesControlPlane
+    name: heal-k3d-prod-control-plane
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: DockerCluster
+metadata:
+  name: heal-k3d-prod
+  namespace: default
+spec:
+  # CAPD puts a HAProxy container in front of the API server and writes its
+  # config. Leave this empty. A customHAProxyConfigTemplateRef pointing at a
+  # ConfigMap that does not exist blocks every DockerMachine reconcile, so the
+  # node containers start but never bootstrap.
+  loadBalancer: {}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: DockerMachineTemplate
+metadata:
+  name: heal-k3d-prod-control-plane
+  namespace: default
+spec:
+  template:
+    spec:
+      # kind only publishes node images for some patch releases. A version with no
+      # image fails the pull with "not found" and leaves Machines in Provisioning.
+      # Check hub.docker.com/r/kindest/node/tags before changing this.
+      customImage: kindest/node:v1.31.6
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: DockerMachineTemplate
+metadata:
+  name: heal-k3d-prod-worker
+  namespace: default
+spec:
+  template:
+    spec:
+      customImage: kindest/node:v1.31.6
