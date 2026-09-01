@@ -1,0 +1,31 @@
+---
+# This repository, read over SSH with its own deploy key (the flux-system
+# Secret that install-flux.sh creates). Not a personal credential, so revoking
+# cluster access never means rotating someone's account.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/dropporg/dropp-infra.git
+---
+# Reconciles the directory this file is in. install-flux.sh applies it once,
+# and after that changes to the Flux configuration arrive through Git.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./capi/mgmt-cluster/flux
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

@@ -1,0 +1,10 @@
+# Everything encrypted in this repository is decrypted by Flux on the
+# management cluster, including the files under capi/workload-clusters/, which
+# that same Flux applies into the workload clusters. So one key covers the
+# whole repo. The per-cluster keys are used in dropp-heal-gitops instead.
+#
+# Only data and stringData are encrypted, so metadata stays readable in diffs.
+creation_rules:
+  - path_regex: '.*\.sops\.yaml$'
+    pgp: 'C12373C2F94A35D8F0C1355599CE51D2234EE8F1'
+    encrypted_regex: '^(data|stringData)$'
