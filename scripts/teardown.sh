@@ -5,7 +5,7 @@
 # ./teardown --cluster <CLUSTER_NAME> (default is all) opts: clusters in this project like mgmt-cluster, heal-k3d-dev, heal-k3d-prod
 # ./teardown --prune -> remove with volumes and storage of clusters.
 #
-# Example: ./teadown --cluster mgmt-cluster --prune -> remove mgmt-cluster with all of its storage and volumes.
+# Example: ./teardown --cluster mgmt-cluster --prune -> remove mgmt-cluster with all of its storage and volumes.
 #
 # Deleting a workload cluster means suspending the Kustomization that declares
 # it first, otherwise Flux recreates it. The suspension is left in place;
