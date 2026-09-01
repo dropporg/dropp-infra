@@ -1,0 +1,80 @@
+---
+# heal-k3d-prod follows two repositories. This one carries the platform, which
+# every cluster gets; heal/gitops/gitrepository.yaml adds the application's.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/dropporg/dropp-infra.git
+---
+# cert-manager and Envoy Gateway, which must land before the application: its
+# HTTPRoute needs the Gateway API CRDs and its TLS needs the issuers.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: platform
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  retryInterval: 1m0s
+  timeout: 10m0s
+  path: ./capi/workload-clusters/heal-k3d-prod/platform
+  prune: true
+  # Wait for the HelmReleases, so `heal` below does not start before the CRDs
+  # it needs exist.
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+# Issuers and the Gateway. A separate stage because both need CRDs the charts
+# above install, and a Kustomization cannot depend on part of itself.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: platform-config
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  retryInterval: 1m0s
+  timeout: 5m0s
+  path: ./capi/workload-clusters/heal-k3d-prod/platform/config
+  prune: true
+  wait: true
+  dependsOn:
+    - name: platform
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+# The heal namespace and the pointer to the application's GitOps repository.
+#
+# Called heal-bootstrap and not heal, because what it applies creates a
+# Kustomization named flux-system/heal. With the same name the parent applies
+# a resource it already owns: it overwrites its own spec with the child's,
+# then reconciles the application repo under its old inventory and prunes the
+# namespace, the GitRepository and itself. The cluster empties out while every
+# Kustomization still reports healthy.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: heal-bootstrap
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  retryInterval: 1m0s
+  timeout: 5m0s
+  path: ./capi/workload-clusters/heal-k3d-prod/heal
+  prune: true
+  dependsOn:
+    - name: platform-config
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

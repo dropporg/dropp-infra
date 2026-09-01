@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Both need CRDs from the platform charts, so they reconcile as a separate
+  # Flux Kustomization that dependsOn `platform`.
+  - issuers.yaml
+  - gateway.yaml

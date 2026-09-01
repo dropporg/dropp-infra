@@ -1,0 +1,25 @@
+# Hands ownership of the heal namespace to dropp-heal-gitops.
+#
+# With prune, deleting a manifest there deletes the object here. Together with
+# the HelmRelease's driftDetection that closes both directions: manual edits
+# are reverted and manual additions are removed.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: heal
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  retryInterval: 1m0s
+  timeout: 5m0s
+  path: ./fluxcd/heal-k3d-prod
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: heal-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      # This cluster's own key, delivered by the management cluster.
+      name: sops-gpg-heal

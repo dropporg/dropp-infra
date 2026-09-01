@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Flux itself.
+  - gotk-components.yaml
+  # Credentials, applied before the sources that use them.
+  - flux-ssh-key.sops.yaml
+  - heal-gitops-ssh-key.sops.yaml
+  - sops-gpg-heal.sops.yaml
+  # What this cluster follows.
+  - gotk-sync.yaml

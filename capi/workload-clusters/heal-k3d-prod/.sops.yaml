@@ -1,0 +1,9 @@
+# Bootstrap secrets for heal-k3d-prod.
+#
+# Flux on the management cluster decrypts these and applies them into
+# heal-k3d-prod over the CAPI kubeconfig, so they use the management key and not
+# this cluster's own key.
+creation_rules:
+  - path_regex: '.*\.sops\.yaml$'
+    pgp: 'C12373C2F94A35D8F0C1355599CE51D2234EE8F1'
+    encrypted_regex: '^(data|stringData)$'

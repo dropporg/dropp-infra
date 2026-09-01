@@ -1,0 +1,31 @@
+---
+# One Gateway per cluster. Applications attach HTTPRoutes to it instead of
+# each bringing its own ingress.
+#
+# The listener hostname is a wildcard one label deep. Gateway API wildcards
+# do not match the apex and do not match across dots: *.heal.local matches
+# heal-dev.heal.local but not heal.local, and *.dev.heal.local would match
+# neither. A route outside the pattern attaches silently and never serves.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: heal-gateway
+  namespace: envoy-gateway-system
+spec:
+  gatewayClassName: heal
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.heal.local"
+      allowedRoutes:
+        namespaces:
+          # Routes live with their application, not here.
+          from: All
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: heal
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
