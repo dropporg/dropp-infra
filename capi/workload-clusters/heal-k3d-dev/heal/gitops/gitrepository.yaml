@@ -1,0 +1,18 @@
+# The application's desired state, in its own repository on its own cadence.
+#
+# The pointer lives here and not in dropp-heal-gitops because a repository
+# cannot make itself a cluster's source of truth. Which repo a cluster follows
+# is a provisioning decision.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: heal-gitops
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    # Created from capi/workload-clusters/heal-k3d-dev/flux-system.
+    name: flux-system-ssh
+  url: ssh://git@github.com/dropporg/dropp-heal-gitops.git

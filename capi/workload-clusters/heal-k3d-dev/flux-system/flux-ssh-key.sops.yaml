@@ -1,0 +1,43 @@
+# Deploy key for dropporg/dropp-infra, used by Flux inside heal-k3d-dev.
+#
+# Encrypted to the management key. Flux on the management cluster decrypts it
+# and applies it into heal-k3d-dev, so the workload cluster never holds the
+# management key itself.
+#
+# known_hosts is included on purpose. Flux has no trust-on-first-use, so a
+# GitRepository without it fails with 'host key verification failed'.
+apiVersion: v1
+data:
+    identity: ENC[AES256_GCM,data:eD5RUJ9gCXshbNVPsnttfOCt0kc6qs4GzfwHR6OW0wi+qcikgQwT7cV26MgOExTPEQ3Cc308KMRWT5dEwiqTH2U+Q83jha2B30+T4MM+99QiokSTgow7EzE/xl3zcEKknWZUfJigJTuE5J7BZ/haHmJBdC9PJoLcZ9w2xr4IX9PpMbKmoQSL8Hfa9bHIBUcihhkCJEgnUTZr2TWCzM+WQhHzb9ec4dNpXdlQT5TutYKpLK2cxxQCvTxYEY1zQMLd1OQdZ8HJzb7smVRx0BLddexfuFXHCdx2ITfUmO/S4s/mjmZAQQuzz2hvyuOs2/3V2taZkS/d/BHg+YLoYJjkn0jgs1CiFbDlnvp471ZKON9JG1ySpzB+XNw6Zxv/x672UDe5+MKIW5l0aI/I9chpdTecZwKFPUqtd91dZhCNfHF5SPh525zM6CVpWIEpaIgChKQQZNBherCWpPfz/qnwIskbvsiMqCxMsKMja+kzNW9n/OW7dmowUyXfbaTHSW5N9yv3UmfIZWGcTz9EiD1iHt2nwi6Bs/Qly7xg0iC7AQL8NmsYoiaDNMli8zDFCjGw9F0+B4AE2BQDHiNkYzFEyLcPAQHri59ZoaLoUFzSrnlBfMWpMhbSqPz0qm/HNHmNighqckqSACO0u/2ycV27STvu5l7gE4qFkNFIcJtN5u/ts51MhMBw2zG7u5iUboqXgWOYXM/3X2Fm7iQm0dLCuR9kb6YFCcZUGSI+QqfxQXG46I0DBryA1ZFTtt2Er7ho2ERGgykIw03TvfClu8XDqg==,iv:BkVPU33W2BHrWz9ZhqgKiYeh7h7U1zg3FIFllT73xqU=,tag:P6LTtPY2TKNzHUhbcsiUsw==,type:str]
+    identity.pub: ENC[AES256_GCM,data:wE98cRAdmg7cj0hm2yqbYEXvh6D6Z1TfOxNQSdh1m8eEI0Oc97UgdUhgP4jys7ZQ74pdJI/k4mCOrqvzJakysyYQGBj/BQX0MCdWDdT20Q4rHSxpRdYn6okFos28LHacsEtWhiGqBr5wxc01kIuh0vdWMwHq0MSd8bOLk0YDB5YJkbjivVr0p8l6VgQRIkpj7tFPXhiN5rRdQcPzAA7xrTbsk1M=,iv:UEV7tYirlP9yMYQZwI7dlK3a6+YRote/y8tfcB6Dzk4=,tag:gud8iRtKxI+08MyFtysOLw==,type:str]
+    known_hosts: ENC[AES256_GCM,data:TYsaBNDl3Wt8N1WGnO+ZmFPq7qAVZC1+W07zMTL+iDE21C5DYHIi256ksg8bT5flyP4NyOoKyv36zPS6xNp7Vjyd2JhaFVG7muX4opP/HqvKGx9mQHTme5Tr4x24IPIzJsmHZt9VHZp2v59u1H6dMZozOI/HYQqtiYmg8huLxlVop6s6uTAuVdwZEVDi3tiZ3mmWo1IMA4P/4dIFCsGR9Wxso+HswTAI,iv:a3GQFCuyI0QoKg8/kBFRdVUPsnuBj1lobkV2iiVjTpY=,tag:s9KGTVfXO+nyYknZSFL6Kg==,type:str]
+kind: Secret
+metadata:
+    name: flux-system
+    namespace: flux-system
+sops:
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-08-30T19:56:51Z"
+    mac: ENC[AES256_GCM,data:7IkbxUWlgEujcHb4MUcikLphUSj6JN9BmgskVmUmZH0JkklxBTH/drpkaAnqrCShMeDwW0koR6UdnpWjYCPaVl1gvzAj0TdRo1VMsJEGWSByAFhmpthuUgo32+q3Xw/iForzV9tl3lgsk72PO/VnMvHa8oVH/KM9Nh1QnxeWNAs=,iv:1S+so0unX1z9c96PWj20jzeSMcQPFC3gfImikLQDS7Q=,tag:GqiQzO1jDZ7RQ9aI+CMS2Q==,type:str]
+    pgp:
+        - created_at: "2026-08-30T19:56:51Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5nOUdIjTujxAQ/+Mk3J/cwSpiwwUGannw3rwNNSbIGg2sD9gzileKWt39dv
+            E3Pvq40NYAkD7aBFoVUM9ogUBVFhxo5LkFWwscFBiKM+Tf2nJoNL78mKpdRm7EBe
+            Cqzbrb7LQixSw/sghWpHa85PlGgBSELI/jf1nR36lBHlp0Bfd22tOmjWzQi6mqjd
+            hw4fJCXcQkF3yV7dBdODUfH7pEjxXtBYVAd2cFQgeGmkXSiDoHqkCRFHQyWmNIo1
+            H7EtwouGXe4X14+D+m14TEL0yNSnNu0CZPpKlyS6NkzuogAciHyI21y/uoo/dIOG
+            EuAYLVZbetyOFHcY9eR5i3x0clbF+RBUhw45w5fR5CSbpme15KrgTyhyHA3fmgd/
+            mHh9H1oKO9HeiSxeb02AlwysxlFIqAQrs+33hXMRnidOh3yZzGWMliQtc6346a6M
+            czbrGxEzSb34oBXx4I77MMfFaOfCBgwgmFbpCM2IM074grwQUb1XOwPlXuVRA3S0
+            v6lQjkH9hx7flHxSVJIbiN9uSWS5Da+nQsfQkgCTkOOS46o9HYiutXwcVzZO7XaC
+            n6NjGV+tZMUN7u1jplsWh3WEj0cF33At4bBO1NgoHjeacd+5juoZfcZ/SHQ/nIiO
+            Ao7mIacH1ft3Z2GLw1B7R6xDQZmXeaIbt7IcWwKLFz3vcQcO3Nbvoet78d7jnU7S
+            XgFR8y7BeffyAHsOXAvp03+H43JuSFz6Njtgkh0N0b0smI8BcjzzxZZBcqgtQ25/
+            GUIY1WnAAZi2WNoRUQrlmZOIwLanCyvrmuZKjAlrOi8XaZRum8X7uCdU2ZmCJDQ=
+            =9S7c
+            -----END PGP MESSAGE-----
+          fp: C12373C2F94A35D8F0C1355599CE51D2234EE8F1
+    version: 3.13.1

@@ -1,0 +1,46 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: envoy-gateway
+  namespace: envoy-gateway-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gateway-helm
+      # Not v1.9.x. From v1.9.0 the CRDs use the CEL format library
+      # (format.dns1123Label()), which needs Kubernetes 1.32. These clusters run
+      # 1.31, where the install fails compiling the CRD schema with "undeclared
+      # reference to dns1123Label". v1.8.4 is the last release without it.
+      version: "v1.8.4"
+      sourceRef:
+        kind: HelmRepository
+        name: envoy-gateway
+        namespace: flux-system
+      interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  driftDetection:
+    mode: enabled
+  values:
+    deployment:
+      replicas: 1
+      envoyGateway:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+    config:
+      envoyGateway:
+        logging:
+          level:
+            # Verbose in dev; prod uses info.
+            default: debug

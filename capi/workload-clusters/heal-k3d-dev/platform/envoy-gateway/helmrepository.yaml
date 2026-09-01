@@ -1,0 +1,11 @@
+# Envoy Gateway ships its chart as an OCI artifact rather than on an HTTP
+# index, so this is type: oci.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: envoy-gateway
+  namespace: flux-system
+spec:
+  type: oci
+  interval: 1h
+  url: oci://docker.io/envoyproxy

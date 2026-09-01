@@ -1,0 +1,39 @@
+# Deploy key for dropporg/dropp-heal-gitops, the application's desired state.
+#
+# Separate from flux-ssh-key.sops.yaml because GitHub scopes a deploy key to
+# one repository, and the two should be revocable on their own.
+apiVersion: v1
+data:
+    identity: ENC[AES256_GCM,data:nHhh5gC1dzVkaXXxgo88JdtHhk2RnRJhq9kIztYubATQtfdbPw5rWu7u5FWd4IW8IhcjC6nT1rwQ7SKJVrZyPlvw2m/hXilREmblft4oijIcN62tkNNlT6PKvy9wrwhsEl37Kqpu4VrWyZ6Bi3DSrjY31Uy1sU7khDYQFeBgDRZBuoeXsRFBzYAomgRc2TGxZjA7husKePOHPuPvOHjJh6uFsPsnIWgHJ8brkHVu4XSmiM6Lmy5WPCYUY5RKiTcb2OEQ2t1jF1s/44ltPgawlDdByrxyWw273QvFmnOgT8RwHXcmI1DOJrdNWc3qUOGHdmCr21c2kkQMSGvGxLrwFvR3EEIrMPBGhOZwzJcOlfglEyF5je89gOIKlIGxaLzXD7WbfXvbqxE26z+42Jt5yDEXYrIFq+SLbKBdZ3uoW+MVXpYsH6tC+h2T6DN7q2997UtTRCzNZE1n95F6kZsjxIMcJvAXSpLVPPmrJKzImoze7QNrW8YY9+843kbU1fAkc0acun2DvS4obO8rLRtNElOJ4+tJttbPzmjFlAPygyRfJH0AWtSa7Mflcm04F+1Zr6PDgabaLBANCWDV9o2XTOpT3yWq2lW6ihq0iihMfq3Bg1ZLl3K5yDAPBkZI80+p1cwGq0w0mzQDITEsFZRjWlLmNSLAh4dtDDksvt1/6f6EoEufUNNQfP1IN6tgweteaPOjKqc4c/48UQbp3hPa1Dp40GBm42XzZq3xPlEM9oJ/x3kCxBJOaipwVAxd+0+k2STjuQSIZjQcf3ErOvXtBM3rHOWEAIr1pUJ2NA==,iv:xGvZgN486YkVMfE6ZpgDiDUe6hSPBRqZqfwdhnWZwUg=,tag:gxmZ+gqlaaSfHUJVCh/aFg==,type:str]
+    identity.pub: ENC[AES256_GCM,data:SE2QZ/LpIxv60nEgGgcECg6A9hoFISOr54muNLVcf1eBxGUVGaJ8s699NDy28yul7o/MKop2bbZeUh9yrAyaQcHZ6BZ63KtkVZ1yq3iHetaBUZD7rHDArJK96smrCpeyeC7ejfeKNtOsJDi+uvs2pdyyLPFObIRcfsT6vrEG74e3wb6a/03S7CWlzIfw4tTmNDhbjP5/QueN8bcpqJLuyC8DrYsKVD2eoqpslg==,iv:HwZE9Vs6dj8Of2V+p8N+5LGs5t+lkn2eWODY2NjD7+k=,tag:AauRFOifkusFclsb9AlTLQ==,type:str]
+    known_hosts: ENC[AES256_GCM,data:WGMzAx3dBMhVeEJIcFikik2GrjWC6d70f/yt10a4XN0c97j76j1MEiggaXqAZ8radYrrfk84WvM7kpUxHf/QMLbb5TLlR3bja6il2XztfglBrKATAIB1wdbj6e60jMYQyPQ7YrK9kNcsEJhGU1QfBT1FVQXoDuUSQvHRnhjkwm6mh2A6u1A6kaHj66CKaEWObyHif1C/qqWpwOsobX58TtSKsiPCnjIB,iv:G1baR/eCJFJYP+/Mezj7nlE7LJVwuDyYPJbw6C2dySQ=,tag:7V3Y5dAfd+YIVLWH+z+jBQ==,type:str]
+kind: Secret
+metadata:
+    name: flux-system-ssh
+    namespace: flux-system
+sops:
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-08-30T19:57:35Z"
+    mac: ENC[AES256_GCM,data:axBoG2b88BiSyi13qwKVgCIskH2m72gbqBWUhP9HpmQDV7Q3I5v/3NoilaYIhk8y9Tn682B2dw3kJH6/DPpi4UfgTHRJRylXeH3haPnRrEu5PF+PJoUsSv+JlzUz5XHDIAbmO0rmqcs4motFO2PdlVTEln+KpUvkxSDcRJmRMFo=,iv:SokpE0QJm6bti5uEa4u+jynweVUayd8ap+37aR8SVpA=,tag:+Q6lFY+Bh/xQvYLH0BYZLA==,type:str]
+    pgp:
+        - created_at: "2026-08-30T19:57:35Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5nOUdIjTujxAQ//YMaQhse5OG/p0isVv6D1aa2eGnZ7z5AlSePz1OOvtSpN
+            BcK6O8MqFZ4HcM82NXmDxBGWgyjUaB5T1Z4aXDVgJNFour912RFOtZxafHmAk9Oy
+            wDXyiSCujcce2AO14ZHeQ48xTpSWDLdveegVLoM4eLp4jaMLrsMtfrLwINfQsw3u
+            dwmfPOBzTO36S70gQkpkTTWOd2uIB76aoqf+aqp2LOGqBB5nFH8XIARho82gUMu5
+            1o5+7OXdhe8SR6P23rGB84cnnHCEVx4VVF+ExlE+4E6yb2r4h2Nh5ynuv32+7TPw
+            1EEVYi1O+FD+SdCW4/vc2yukmWwAmd9XqnpVz+jxHcp62mBcUcCJryk4WZt6UlzJ
+            LXgVMWJV/FyoDC1bKTlyx/17zxbkNVxt3KCyuwaGV3F1K7GLS2Z/3dtToo2gS5C1
+            tmsPfUHi5JVHGJRCDYGA+nco3IE1tlIUWdMYkeQpxYmtzkEGnPTz1sLfUgrGB3jE
+            DPlh6ygBlYGzIk6+POWo1RUcHijilOgYQ+D4A+hvDwHY+9esfB5qTXvFXO+YKJwX
+            G/3oOa2042kPoCFm+tudX9dBxM9xeYN9iizH5VmClfo61B1hqacrpmfwNf1ceRbu
+            ysF+uv3gW7rejE8/orm9txQFzSFMeXxESM+0K0GnyxgQqX5AwqmIdb+WgxtCljvS
+            XgE1UPxvIS5UG+71oxuQjAnWBt6o76ygE9x40j505y1lcM8LEMD7p1Oh2tu7YwnL
+            Sxek9AoYLEvdXatkaaPUN9v11bSF/85nHSd7S5TSZYZpQaYAJPmVL5BI4z1tWZY=
+            =k0bP
+            -----END PGP MESSAGE-----
+          fp: C12373C2F94A35D8F0C1355599CE51D2234EE8F1
+    version: 3.13.1
