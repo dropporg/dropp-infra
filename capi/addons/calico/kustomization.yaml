@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default
+
+# ClusterResourceSet reads a ConfigMap and cannot fetch a URL, so Calico is
+# vendored here. One copy serves both clusters, since both live in `default`.
+configMapGenerator:
+  - name: calico-cni
+    files:
+      - calico.yaml
+
+generatorOptions:
+  # The ClusterResourceSet refers to this ConfigMap by name, so a hash suffix
+  # would break the reference on every change.
+  disableNameSuffixHash: true
+  labels:
+    dropp.io/addon: calico

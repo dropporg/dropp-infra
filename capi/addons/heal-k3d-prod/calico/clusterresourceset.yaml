@@ -1,0 +1,19 @@
+---
+# Installs Calico into heal-k3d-prod once its API server answers. ApplyOnce,
+# because after the bootstrap Calico is upgraded deliberately rather than
+# re-applied on every reconcile.
+apiVersion: addons.cluster.x-k8s.io/v1beta1
+kind: ClusterResourceSet
+metadata:
+  name: heal-k3d-prod-calico
+  namespace: default
+spec:
+  strategy: ApplyOnce
+  clusterSelector:
+    matchLabels:
+      # Set on the Cluster in capi/clusters/local/heal-k3d-prod/cluster.yaml.
+      dropp.io/cni: calico
+      dropp.io/environment: prod
+  resources:
+    - name: calico-cni
+      kind: ConfigMap

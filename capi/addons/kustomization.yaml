@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # The vendored CNI manifest, shared by both clusters.
+  - calico/
+  # One ClusterResourceSet per cluster, matched on Cluster labels.
+  - heal-k3d-dev/
+  - heal-k3d-prod/
