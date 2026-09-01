@@ -1,0 +1,32 @@
+---
+# Installs Flux into heal-k3d-dev from the management cluster, so the workload
+# cluster is never bootstrapped by hand.
+#
+# kubeConfig.secretRef names the <cluster>-kubeconfig Secret that CAPI creates
+# beside the Cluster. This Kustomization lives in `default` rather than
+# flux-system because Flux looks up both kubeConfig.secretRef and
+# decryption.secretRef in its own namespace, and that Secret is in `default`.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: heal-k3d-dev-cluster-bootstrap
+  namespace: default
+spec:
+  interval: 10m
+  # Runs while the cluster is still coming up, so early failures are normal.
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./capi/workload-clusters/heal-k3d-dev/flux-system
+  prune: true
+  wait: false
+  kubeConfig:
+    secretRef:
+      name: heal-k3d-dev-kubeconfig
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
